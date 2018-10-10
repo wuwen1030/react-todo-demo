@@ -5,7 +5,7 @@ import * as utils from './utils'
 
 type TodoEvent = (todo?: Todo) => void
 
-interface Props {
+export interface Props {
   todo: Todo,
   editing: boolean,
   onToggle: TodoEvent,
@@ -20,8 +20,6 @@ interface State {
 }
 
 export default class TodoItem extends React.Component<Props, State> {
-
-  state:State = {}
 
   componentDidUpdate = (prevProps: Props) => {
     if (!prevProps.editing && this.props.editing) {
