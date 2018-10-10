@@ -191,6 +191,10 @@ class App extends React.Component<{}, State> {
           </section>
           {footer}
         </div>
+        <footer className="info">
+            <p>Double-click to edit a todo</p>
+            <p>Created by <a href="http://github.com/wuwen1030/">wuwen</a></p>
+        </footer>
       </div>
     );
   }
