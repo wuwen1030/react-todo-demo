@@ -1,5 +1,4 @@
 import * as React from 'react'
-import * as ReactDOM from 'react-dom'
 import Todo from './Todo'
 import * as utils from './utils'
 
@@ -21,12 +20,15 @@ interface State {
 
 export default class TodoItem extends React.Component<Props, State> {
 
+  editField: HTMLInputElement | null
+
   componentDidUpdate = (prevProps: Props) => {
     if (!prevProps.editing && this.props.editing) {
-      let node = ReactDOM.findDOMNode(this.refs.editField) as HTMLInputElement
-      node.focus()
-      node.setSelectionRange(node.value.length, node.value.length)
-      node.value = this.props.todo.title
+      if (this.editField) {
+        this.editField.focus()
+        this.editField.setSelectionRange(this.editField.value.length, this.editField.value.length)
+        this.editField.value = this.props.todo.title
+      }
     }
   }
 
@@ -39,10 +41,10 @@ export default class TodoItem extends React.Component<Props, State> {
   }
 
   onEditKeyDown = (event: React.KeyboardEvent) => {
-    let node = ReactDOM.findDOMNode(this.refs.editField) as HTMLInputElement
+    let editField = event.target as HTMLInputElement
     switch (event.keyCode) {
       case utils.ENTER_KEY:
-        let newTitle = node.value.trim()
+        let newTitle = editField.value.trim()
         if (newTitle) {
           this.props.onSave(newTitle)
         } else {
@@ -50,7 +52,7 @@ export default class TodoItem extends React.Component<Props, State> {
         }
         break;
       case utils.ESCAPE_KEY:
-        node.value = this.props.todo.title
+        editField.value = this.props.todo.title
         this.props.onCancel()
         break;
       default:
@@ -77,7 +79,7 @@ export default class TodoItem extends React.Component<Props, State> {
           <button className="destroy" onClick={() => this.props.onDestory(this.props.todo)}></button>
         </div>
         <input 
-          ref="editField"
+          ref = { input => this.editField = input}
           className="edit"
           onKeyDown={this.onEditKeyDown}
         />
